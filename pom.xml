@@ -15,6 +15,7 @@
 
     <properties>
         <arg1>1.1</arg1>
+        <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
     </properties>
 
     <dependencyManagement>
@@ -28,5 +29,37 @@
 
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <basedir>.</basedir>
+                    <includes>
+                        <include>NOTICE</include>
+                        <include>*/NOTICE</include>
+                    </includes>
+                    <regex>true</regex>
+                    <replacements>
+                        <replacement>
+                            <token>Copyright 2014-\d{4} The Apache Software Foundation</token>
+                            <value>Copyright 2014-${maven.build.timestamp} The Apache Software Foundation</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
